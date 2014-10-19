@@ -67,6 +67,9 @@
     <ClInclude Include="dictionary.h" />
     <ClInclude Include="grid.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
