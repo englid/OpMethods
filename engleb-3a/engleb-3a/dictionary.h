@@ -9,7 +9,6 @@ class dictionary{
 private:
 public:
 	dictionary(string fileName);
-	~dictionary();
 	vector<string> list;
 };
 
@@ -24,8 +23,4 @@ dictionary::dictionary(string fileName){
 			list.push_back(newWord);
 		}
 	}
-}
-
-dictionary::~dictionary(){
-	cout << "Deleting dictionary.\t";
 }
