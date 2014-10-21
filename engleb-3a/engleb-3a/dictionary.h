@@ -8,15 +8,15 @@ using namespace std;
 class dictionary{
 private:
 public:
-	dictionary();
+	dictionary(string fileName);
 	~dictionary();
 	vector<string> list;
 };
 
-dictionary::dictionary(){
+dictionary::dictionary(string fileName){
 	string newWord;
 	ifstream fin;
-	fin.open("dictionary.txt");
+	fin.open(fileName);
 	if (!fin){ cout << "error"; }
 	while (fin.good()){
 		fin >> newWord;
