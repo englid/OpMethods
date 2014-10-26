@@ -8,7 +8,7 @@ void findMatches(dictionary dict, grid grid);
 void testSearch(string dictFile);
 
 void main(){
-	dictionary test = dictionary("test.txt");
+	dictionary test = dictionary("dictionary.txt");
 	grid test2("input15.txt", 15);
 	findMatches(test, test2);
 	test2.printGrid();
@@ -41,11 +41,11 @@ void findMatches(dictionary dict, grid grid){
 								m = (l + j * x);
 								if (n < 0)
 									n = n + grid.getSize();
-								if (n > grid.getSize())
+								if (n >= grid.getSize())
 									n = n - grid.getSize();
 								if (m < 0)
 									m = m + grid.getSize();
-								if (m > grid.getSize())
+								if (m >= grid.getSize())
 									m = m - grid.getSize();
 								if ((dict.list[i])[j] != grid.workGrid[n][m])
 									break;
