@@ -4,14 +4,20 @@
 #include <conio.h>
 using namespace std;
 
-void findMatches(dictionary dict, grid grid);
+void findMatchesBinary(dictionary dict, grid grid);
 void testSearch(string dictFile);
 
 void main(){
-	dictionary test = dictionary("dictionary.txt");
+	dictionary test = dictionary("test4.txt");
 	grid test2("input15.txt", 15);
+	//test.print();
+	test.selectionSort();
+	cout << "\n\n";
+	//test.print();
+	cout << "\n\n";
+
 	findMatches(test, test2);
-	test2.printGrid();
+	//test2.printGrid();
 
 	cout << endl << endl;
 	grid test3("input30.txt", 30);
@@ -22,12 +28,14 @@ void main(){
 	cin >> f;
 }
 
-void findMatches(dictionary dict, grid grid){
+void findMatchesBinary(dictionary dict, grid grid){
 	int n, m;
-	for (int i = 0; i < dict.list.size(); i++){										//iterate through every word in dictionary
-		for (int l = 0; l < grid.getSize(); l++){									//cover matrix length
-			for (int w = 0; w < grid.getSize(); w++){								//cover matrix width
-				if ((dict.list[i])[0] == grid.workGrid[w][l]){						//check if first letter matches
+	for (int l = 0; l < grid.getSize(); l++){									//cover matrix length
+		for (int w = 0; w < grid.getSize(); w++){								//cover matrix width	
+			int i = dict.binarySearchByLetter(grid.workGrid[w][l], dict.list, 0, dict.list.size() -1 );
+			if (i == -1)
+				continue;
+			while (dict.list[i][0] == grid.workGrid[w][l]){
 					for (int x = -1; x <= 1; x++){									//x and y represent all directions  <-- Not sure how the algorithm works at this point -Rob
 						for (int y = -1; y <= 1; y++){
 							if (y == 0 && x == 0)
@@ -52,8 +60,10 @@ void findMatches(dictionary dict, grid grid){
 							}
 						}
 					}
+					i++;
+					if (i >= dict.list.size())
+						break;
 				}
-			}
 		}
 	}
 }
@@ -66,5 +76,5 @@ void testSearch(dictionary dict){
 	cout << endl << "What is the size of the grid? ";
 	cin >> size;
 	grid searchGrid(fileName, size);
-	findMatches(dict, searchGrid);
+	//findMatches(dict, searchGrid);
 }
