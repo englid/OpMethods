@@ -5,22 +5,24 @@
 using namespace std;
 
 void findMatchesBinary(dictionary dict, grid grid);
+void findMatches(dictionary dict, grid grid);
 void testSearch(string dictFile);
 
 void main(){
-	dictionary test = dictionary("test4.txt");
+	dictionary test = dictionary("test.txt");
 	grid test2("input15.txt", 15);
 	//test.print();
 	test.selectionSort();
 	cout << "\n\n";
-	//test.print();
+	test.print();
 	cout << "\n\n";
-
 	findMatches(test, test2);
+	cout << "\n\n";
+	findMatchesBinary(test, test2);
 	//test2.printGrid();
 
 	cout << endl << endl;
-	grid test3("input30.txt", 30);
+	//grid test3("input30.txt", 30);
 	//test3.printGrid();
 
 	cout << "\nDone.\t";
@@ -30,19 +32,64 @@ void main(){
 
 void findMatchesBinary(dictionary dict, grid grid){
 	int n, m;
-	for (int l = 0; l < grid.getSize(); l++){									//cover matrix length
-		for (int w = 0; w < grid.getSize(); w++){								//cover matrix width	
-			int i = dict.binarySearchByLetter(grid.workGrid[w][l], dict.list, 0, dict.list.size() -1 );
-			if (i == -1)
+	for (int l = 0; l < grid.getSize(); l++)
+	{
+		for (int w = 0; w < grid.getSize(); w++)		// iterate through length and width of matrix
+		{
+			int i = dict.binarySearchByLetter(grid.workGrid[w][l], dict.list, 0, dict.list.size() -1 );			// find first word in dictionary with that letter
+			if (i == -1)		// -1 == match not found
 				continue;
-			while (dict.list[i][0] == grid.workGrid[w][l]){
-					for (int x = -1; x <= 1; x++){									//x and y represent all directions  <-- Not sure how the algorithm works at this point -Rob
+			do
+			{
+				for (int x = -1; x <= 1; x++)		//x and y represent all directions
+				{									
+					for (int y = -1; y <= 1; y++)
+					{
+						if (y == 0 && x == 0)
+							continue;
+						for (int j = 0; j < dict.list[i].length(); j++)		//final loop for checking for matches, letter by letter
+						{			
+							if (j == dict.list[i].length()-1)
+							{
+								cout << dict.list[i]<< endl;
+								break;
+							}
+							n = (w + j * y);
+							m = (l + j * x);
+							if (n < 0)
+								n = n + grid.getSize();
+							if (n >= grid.getSize())
+								n = n - grid.getSize();
+							if (m < 0)
+								m = m + grid.getSize();
+							if (m >= grid.getSize())
+								m = m - grid.getSize();
+							if ((dict.list[i])[j] != grid.workGrid[n][m])
+								break;
+						}
+					}
+				}
+				i++;
+				if (i >= dict.list.size())
+					break;
+			} while (dict.list[i][0] == grid.workGrid[w][l]);
+		}
+	}
+}
+
+void findMatches(dictionary dict, grid grid){
+	int n, m;
+	for (int i = 0; i < dict.list.size(); i++){										//iterate through every word in dictionary
+		for (int l = 0; l < grid.getSize(); l++){									//cover matrix length
+			for (int w = 0; w < grid.getSize(); w++){								//cover matrix width
+				if ((dict.list[i])[0] == grid.workGrid[w][l]){						//check if first letter matches
+					for (int x = -1; x <= 1; x++){									//x and y represent all directions
 						for (int y = -1; y <= 1; y++){
 							if (y == 0 && x == 0)
 								continue;
 							for (int j = 0; j < dict.list[i].length(); j++){			//final loop for checking for matches
-								if (j == dict.list[i].length()-1){
-									cout << dict.list[i]<< endl;
+								if (j == dict.list[i].length() - 1){
+									cout << dict.list[i] << endl;
 									break;
 								}
 								n = (w + j * y);
@@ -60,13 +107,12 @@ void findMatchesBinary(dictionary dict, grid grid){
 							}
 						}
 					}
-					i++;
-					if (i >= dict.list.size())
-						break;
 				}
+			}
 		}
 	}
 }
+
 
 void testSearch(dictionary dict){
 	string fileName;
@@ -76,5 +122,6 @@ void testSearch(dictionary dict){
 	cout << endl << "What is the size of the grid? ";
 	cin >> size;
 	grid searchGrid(fileName, size);
-	//findMatches(dict, searchGrid);
+	dict.selectionSort();
+	findMatchesBinary(dict, searchGrid);
 }

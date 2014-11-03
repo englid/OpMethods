@@ -42,7 +42,8 @@ void dictionary::selectionSort(){
 			if (list[j].compare(list[min]) < 0){
 				min = j;
 			}
-			swap(i, min);
+			if(i != min)
+				swap(i, min);
 		}
 	}
 }
