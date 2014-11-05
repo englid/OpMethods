@@ -50,7 +50,7 @@ private:
 };
 
 board::board(int sqSize)
-: value(BoardSize + 1, BoardSize + 1), col(BoardSize + 1, BoardSize + 1), rows(BoardSize + 1, BoardSize + 1)
+: value(BoardSize + 1, BoardSize + 1), col(BoardSize + 1, BoardSize + 1), rows(BoardSize + 1, BoardSize + 1), squares(BoardSize + 1, BoardSize + 1)
 // Board constructor
 {
 	clear();
@@ -166,17 +166,78 @@ void board::print()
 }
 
 void board::updateConflicts(){
-	for (int j = 0; j <= BoardSize; j++){
-		for (int k = 0; k <= BoardSize; k++){
-			//if (getCell(j, k) != NULL){
-				//int temp = getCell(j, k) - 1;
-				//col[j][temp] = true;
-				//rows[k][temp] = true;
-			//}
+	for (int j = 1; j <= BoardSize; j++){
+		for (int k = 1; k <= BoardSize; k++){
+			if (!isBlank(j,k)){
+				int temp = getCell(j, k);
+				col[temp][k] = true;
+				rows[temp][j] = true;
+				int square;
+				if (k >= 1 && k <=3){
+					if (j >= 1 && j <= 3){		//loops to define what square the conflict get put into
+						square = 1;
+					}
+					else if (j >= 4 && j <= 6){
+						square = 4;
+					}
+					else{
+						square = 7;
+					}
+				}
+				else if (k >= 4 && k <= 6){
+					if (j >= 1 && j <= 3){
+						square = 2;
+					}
+					else if (j >= 4 && j <= 6){
+						square = 5;
+					}
+					else{
+						square = 8;
+					}
+				}
+				else{
+					if (j >= 1 && j <= 3){
+						square = 3;
+					}
+					else if (j >= 4 && j <= 6){
+						square = 6;
+					}
+					else{
+						square = 9;
+					}
+				}
+				squares[temp][square] = true;
+			}
 		}
 	}
 }
 
 void board::printConflicts(){
-
+	cout << "Row Conflicts:" << endl;
+	cout << "#:123456789\n";
+	for (int i = 1; i <= BoardSize; i++){
+		cout << i << ":";
+		for (int j = 1; j <= BoardSize; j++){
+			cout << rows[j][i];
+		}
+		cout << "\n";
+	}
+	cout << "\n" << "Columns Conflicts:" << endl;
+	cout << "#:123456789\n";
+	for (int i = 1; i <= BoardSize; i++){
+		cout << i << ":";
+		for (int j = 1; j <= BoardSize; j++){
+			cout << col[j][i];
+		}
+		cout << "\n";
+	}
+	cout << "\n" << "Squares Conflicts:" << endl;
+	cout << "#:123456789\n";
+	for (int i = 1; i <= BoardSize; i++){
+		cout << i << ":";
+		for (int j = 1; j <= BoardSize; j++){
+			cout << squares[j][i];
+		}
+		cout << "\n";
+	}
 }
