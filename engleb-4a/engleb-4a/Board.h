@@ -10,7 +10,7 @@
 using namespace std;
 
 typedef int ValueType; // The type of the value in a cell
-const int Blank = -1;  // Indicates that a cell is blank
+const int Blank = -1;  // Indicates that a cell is 
 
 const int SquareSize = 3;  //  The number of cells in a small square
 //  (usually 3).  The board has
@@ -36,17 +36,21 @@ public:
 	bool isBlank(int, int);
 	ValueType getCell(int, int);
 	void setCell(int, int, int);
+	void updateConflicts();
 
 private:
 
 	// The following matrices go from 1 to BoardSize in each
 	// dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
 
-	matrix<ValueType> value;
+	matrix<int> value;
+	matrix<bool> col;
+	matrix<bool> rows;
+	matrix<bool> squares;
 };
 
 board::board(int sqSize)
-: value(BoardSize + 1, BoardSize + 1)
+: value(BoardSize + 1, BoardSize + 1), col(BoardSize + 1, BoardSize + 1), rows(BoardSize + 1, BoardSize + 1)
 // Board constructor
 {
 	clear();
@@ -76,8 +80,9 @@ void board::initialize(ifstream &fin)
 
 		// If the read char is not Blank
 		if (ch != '.')
-			setCell(i, j, ch - '0');   // Convert char to int
+			setCell(i, j, ch - '0');   // Convert char to intj
 	}
+	updateConflicts();
 }
 
 int squareNumber(int i, int j)
@@ -96,6 +101,7 @@ ostream &operator<<(ostream &ostr, vector<int> &v)
 	for (int i = 0; i < v.size(); i++)
 		ostr << v[i] << " ";
 	cout << endl;
+	return ostr;
 }
 
 ValueType board::getCell(int i, int j)
@@ -159,38 +165,18 @@ void board::print()
 	cout << endl;
 }
 
-void board::printConflicts(){
-
-}
-
-int main()
-{
-	ifstream fin;
-
-	// Read the sample grid from the file.
-	string fileName = "sudoku.txt";
-
-	fin.open(fileName.c_str());
-	if (!fin)
-	{
-		cerr << "Cannot open " << fileName << endl;
-		exit(1);
-	}
-
-	try
-	{
-		board b1(SquareSize);
-
-		while (fin && fin.peek() != 'Z')
-		{
-			b1.initialize(fin);
-			b1.print();
-			b1.printConflicts();
+void board::updateConflicts(){
+	for (int j = 0; j <= BoardSize; j++){
+		for (int k = 0; k <= BoardSize; k++){
+			//if (getCell(j, k) != NULL){
+				//int temp = getCell(j, k) - 1;
+				//col[j][temp] = true;
+				//rows[k][temp] = true;
+			//}
 		}
 	}
-	catch (indexRangeError &ex)
-	{
-		cout << ex.what() << endl;
-		exit(1);
-	}
+}
+
+void board::printConflicts(){
+
 }
