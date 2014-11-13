@@ -26,6 +26,8 @@ int main()
 			b1.printConflicts();
 			cout << endl << endl << "Attempting to solve: " << endl;
 			b1.solve();
+			b1.print();
+			b1.printConflicts();
 		}
 	}
 	catch (indexRangeError &ex)

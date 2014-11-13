@@ -28,10 +28,6 @@ class board
 	// Stores the entire Sudoku board
 {
 public:
-	matrix<int> value;
-	matrix<bool> col;
-	matrix<bool> rows;
-	matrix<bool> squares;
 	board(int);
 	void clear();
 	void initialize(ifstream &fin);
@@ -42,13 +38,16 @@ public:
 	void setCell(int, int, int);
 	void updateConflicts();
 	void solve();
-	void attemptValue(int, int);
 	bool isSolved();
 	int findSquare(int, int);
 private:
-
 	// The following matrices go from 1 to BoardSize in each
 	// dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
+	matrix<int> value;
+	matrix<bool> col;
+	matrix<bool> rows;
+	matrix<bool> squares;
+	matrix<bool> backtrack;
 };
 
 board::board(int sqSize)
@@ -212,31 +211,28 @@ void board::printConflicts(){
 }
 
 void board::solve(){
-	for (int i = 0; i <= 9; i++){
-		for (int j = 0; j <= 0; j++){
-			if (isBlank(i, j) == true){
-				attemptValue(i, j);
+	for (int i = 1; i <= 9; i++){
+		for (int j = 1; j <= 9; j++){
+			if (isBlank(i, j)){
+				int test = 1;
+				while (test <= 9){
+					int square = findSquare(j, i);
+					if (col[test][j] == true || rows[test][i] == true || squares[test][square] == true){ test++; }
+					else{
+						setCell(i, j, test);
+						updateConflicts();
+						solve();
+					}
+				}
 			}
 		}
 	}
 }
 
-void board::attemptValue(int i, int j){
-	int test = 0;
-	while (test <= 9){
-		int square = findSquare(j, i);
-		if (col[test][j] == true || rows[test][i] == true || squares[test][square] == true){ test++; }
-		else{ 
-			value[i][j] = test;
-			updateConflicts();
-		}
-	}
-}
-
 bool board::isSolved(){
-	for (int i = 0; i <= 9; i++){
-		for (int j = 0; j <= 9; j++){
-			if (isBlank(i, j) == true){ return false; }
+	for (int i = 1; i <= 9; i++){
+		for (int j = 1; j <= 9; j++){
+			if (isBlank(i, j)){ return false; }
 		}
 	}
 	return true;
