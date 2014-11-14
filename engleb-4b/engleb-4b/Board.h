@@ -48,12 +48,14 @@ private:
 	matrix<bool> rows;
 	matrix<bool> squares;
 	matrix<bool> backtrack;
+	int recursions;
 };
 
 board::board(int sqSize)
 : value(BoardSize + 1, BoardSize + 1), col(BoardSize + 1, BoardSize + 1), rows(BoardSize + 1, BoardSize + 1), squares(BoardSize + 1, BoardSize + 1)
 // Board constructor
 {
+	recursions = 0;
 	clear();
 }
 
@@ -217,6 +219,7 @@ void board::solve(){
 				int test = 1;
 				while (test <= 9){
 					int square = findSquare(j, i);
+					recursions++;
 					if (col[test][j] == true || rows[test][i] == true || squares[test][square] == true){ test++; }
 					else{
 						setCell(i, j, test);
