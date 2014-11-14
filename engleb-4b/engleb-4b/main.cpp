@@ -3,6 +3,7 @@ using namespace std;
 
 int main()
 {
+	int average = 0;
 	cout << "----------------------------------" << endl << "PUZZLE 1" << endl << endl;
 	ifstream fin;
 
@@ -29,6 +30,8 @@ int main()
 			cout << endl << endl << "Attempting to solve: " << endl;
 			b1.solve();
 			b1.print();
+			b1.printRecursions();
+			average += b1.getRecursions();
 		}
 	}
 	catch (indexRangeError &ex)
@@ -57,6 +60,8 @@ int main()
 			cout << endl << endl << "Attempting to solve: " << endl;
 			b2.solve();
 			b2.print();
+			b2.printRecursions();
+			average = average + b2.getRecursions();
 		}
 	}
 	catch (indexRangeError &ex)
@@ -85,6 +90,8 @@ int main()
 			cout << endl << endl << "Attempting to solve: " << endl;
 			b3.solve();
 			b3.print();
+			b3.printRecursions();
+			average += b3.getRecursions();
 		}
 	}
 	catch (indexRangeError &ex)
@@ -92,4 +99,6 @@ int main()
 		cout << ex.what() << endl;
 		exit(1);
 	}
+	average = average / 3;
+	cout << endl << endl << "Average number of recursions: " << average << "\n\nDone.\t";
 }

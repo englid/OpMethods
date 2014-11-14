@@ -40,6 +40,8 @@ public:
 	void solve();
 	bool isSolved();
 	int findSquare(int, int);
+	void printRecursions(){ cout << "Number of recursions: " << this->recursions << endl; }
+	int getRecursions(){ return this->recursions; }
 private:
 	// The following matrices go from 1 to BoardSize in each
 	// dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
