@@ -79,7 +79,6 @@
     <ClInclude Include="d_except.h" />
     <ClInclude Include="d_matrix.h" />
     <ClInclude Include="graph.h" />
-    <ClInclude Include="Predefined.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />

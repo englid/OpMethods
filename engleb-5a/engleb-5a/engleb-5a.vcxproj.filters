@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Predefined.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="d_except.h">
       <Filter>Header Files</Filter>
     </ClInclude>
