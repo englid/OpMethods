@@ -1,4 +1,0 @@
-OpMethods
-=========
-
-Optimization Methods Projects

@@ -37,6 +37,7 @@ void maze::setMap(int i, int j, int n)
 int maze::getMap(int i, int j) const
 // Return mapping of maze cell (i,j) in the graph.
 {
+	return NULL;
 }
 
 maze::maze(ifstream &fin)
@@ -129,13 +130,16 @@ int main()
 	{
 
 		graph g;
+		int i = 0;
 		while (fin && fin.peek() != 'Z')
 		{
 			maze m(fin);
+			m.print(0,i,0,0);
+			i++;
 		}
 
-
 	}
+
 	catch (indexRangeError &ex)
 	{
 		cout << ex.what() << endl; exit(1);

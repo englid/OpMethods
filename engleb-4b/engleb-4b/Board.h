@@ -180,6 +180,13 @@ void board::updateConflicts(){
 				int square = findSquare(k, j);
 				squares[temp][square] = true;
 			}
+			/*else if (isBlank(j, k)){			// Code for resetting conflicts doesn't quite work properly
+				int temp = getCell(j, k);
+				col[temp][k] = false;
+				rows[temp][j] = false;
+				int square = findSquare(k, j);
+				squares[temp][square] = false;
+			}*/
 		}
 	}
 }
@@ -229,6 +236,7 @@ void board::solve(){
 						solve();
 					}
 				}
+				//return		// Attempt at backtracking
 			}
 		}
 	}
