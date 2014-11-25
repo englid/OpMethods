@@ -132,7 +132,7 @@ void maze::mapMazeToGraph(graph &g)
 		for (int j = 0; j < getCols(); j++){
 			if (i != getRows()-1){
 				if (getMap(i, j) > 0 && getMap(i + 1, j) > 0)
-					g.addEdge(getMap(i, j), getMap(i + 1, j));
+					g.addEdge(getMap(i, j)-1, getMap(i + 1, j)-1);
 			}
 			if (j != getCols() -1){
 				if (getMap(i, j) > 0 && getMap(i, j + 1) > 0)
@@ -166,7 +166,7 @@ void maze::findPathRecursive(int curri, int currj, int goali, int goalj, graph g
 	{
 		if (g.getNode(next).isVisited())
 			continue;
-		if (g.isEdge(current, next) || g.isEdge(next, current))
+		if (g.isEdge(current-1, next-1) || g.isEdge(next-1, current-1))
 		{
 			int nexti;
 			int nextj;
