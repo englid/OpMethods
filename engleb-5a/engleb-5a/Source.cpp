@@ -34,12 +34,13 @@ private:
 void maze::setMap(int i, int j, int n)
 // Set mapping from maze cell (i,j) to graph node n. 
 {
+	map[i][j] = n;
 }
 
 int maze::getMap(int i, int j) const
 // Return mapping of maze cell (i,j) in the graph.
 {
-	return NULL;
+	return map[i][j];
 }
 
 maze::maze(ifstream &fin)
@@ -109,6 +110,19 @@ bool maze::isLegal(int i, int j)
 void maze::mapMazeToGraph(graph &g)
 // Create a graph g that represents the legal moves in the maze m.
 {
+	int nodeIndex = 1;
+	for (int i = 0; i < getRows(); i++){
+		for (int j = 0; j < getCols(); j++){
+			if (value[i][j] == true){
+				node *n = new node();
+				n->setId(nodeIndex);
+				g.addNode(*n);
+				setMap(i, j, nodeIndex);
+				nodeIndex++;
+			}
+		}
+	}
+	g.printNodes();
 }
 
 
@@ -138,8 +152,10 @@ int main()
 			int i = m.getRows() - 1;
 			int j = m.getCols() - 1;
 			m.print(i,j,0,0);
+			m.mapMazeToGraph(g);
 
 		}
+		
 
 	}
 
