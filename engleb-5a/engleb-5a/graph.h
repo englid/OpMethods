@@ -43,7 +43,7 @@ private:
 	int id;
 	NodeWeight weight;
 	bool marked;
-	bool visited;
+	bool visited; 
 };
 
 node::node()

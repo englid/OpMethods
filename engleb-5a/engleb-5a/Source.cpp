@@ -23,12 +23,16 @@ public:
 	int getRows(){ return rows; }
 	int getCols(){ return cols; }
 
+	void findPathRecursive();
+
 private:
 	int rows; // number of rows in the maze
 	int cols; // number of columns in the maze
 
 	matrix<bool> value;
 	matrix<int> map;      // Mapping from maze (i,j) values to node index values
+
+	void findPathRecursive(int curri, int currj, int goali, int goalj, graph g, string directions);
 };
 
 void maze::setMap(int i, int j, int n)
@@ -124,17 +128,75 @@ void maze::mapMazeToGraph(graph &g)
 	}
 	g.printNodes();
 
-	for (int i = 0; i < getRows()-1; i++){
-		for (int j = 0; j < getCols()-1; j++){
-			if (getMap(i,j) > 0 && getMap(i+1,j) > 0)
-				g.addEdge(getMap(i,j),getMap(i+1,j));
-			if (getMap(i, j) > 0 && getMap(i, j+1) > 0)
-				g.addEdge(getMap(i, j), getMap(i, j+1));
+	for (int i = 0; i < getRows(); i++){
+		for (int j = 0; j < getCols(); j++){
+			if (i != getRows()-1){
+				if (getMap(i, j) > 0 && getMap(i + 1, j) > 0)
+					g.addEdge(getMap(i, j), getMap(i + 1, j));
+			}
+			if (j != getCols() -1){
+				if (getMap(i, j) > 0 && getMap(i, j + 1) > 0)
+					g.addEdge(getMap(i, j)-1, getMap(i, j + 1)-1);
+			}
 		}
 	}
 	g.printEdges();
 
 
+}
+
+void maze::findPathRecursive(){
+	graph g;
+	mapMazeToGraph(g);
+	findPathRecursive(0,0, getRows()-1, getCols()-1,g, "First,");
+}
+
+void maze::findPathRecursive(int curri, int currj, int goali, int goalj, graph g, string directions){
+	print(goali,goalj,curri,currj);
+	cout << "\n\n";
+	int current = getMap(curri,currj);
+	g.visit(current);
+
+	if (current == getMap(goali, goalj)){
+		cout << "Solved " << directions;
+		return;
+	}
+
+	for (int next = 1; next < g.numNodes(); next++)
+	{
+		if (g.getNode(next).isVisited())
+			continue;
+		if (g.isEdge(current, next) || g.isEdge(next, current))
+		{
+			int nexti;
+			int nextj;
+			if (currj != goalj){
+				if (getMap(curri, currj + 1) == next){				//Right
+					nexti = curri;
+					nextj = currj + 1;
+				}
+			}
+			if (curri != goali){
+				if (getMap(curri + 1, currj) == next){			//Down
+					nexti = curri + 1;
+					nextj = currj;
+				}
+			}
+			if (currj != 0){
+				if (getMap(curri, currj - 1) == next){				//Left
+					nexti = curri;
+					nextj = currj - 1;
+				}
+			}
+			if (currj != 0){
+				if (getMap(curri - 1, currj) == next){				//UP
+					nexti = curri;
+					nextj = currj - 1;
+				}
+			}
+			findPathRecursive(nexti, nextj, goali, goalj, g, directions);
+		}
+	}
 }
 
 
@@ -164,7 +226,7 @@ int main()
 			int i = m.getRows() - 1;
 			int j = m.getCols() - 1;
 			m.print(i,j,0,0);
-			m.mapMazeToGraph(g);
+			m.findPathRecursive();
 
 		}
 		
