@@ -123,6 +123,18 @@ void maze::mapMazeToGraph(graph &g)
 		}
 	}
 	g.printNodes();
+
+	for (int i = 0; i < getRows()-1; i++){
+		for (int j = 0; j < getCols()-1; j++){
+			if (getMap(i,j) > 0 && getMap(i+1,j) > 0)
+				g.addEdge(getMap(i,j),getMap(i+1,j));
+			if (getMap(i, j) > 0 && getMap(i, j+1) > 0)
+				g.addEdge(getMap(i, j), getMap(i, j+1));
+		}
+	}
+	g.printEdges();
+
+
 }
 
 
