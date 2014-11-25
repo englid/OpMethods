@@ -20,6 +20,8 @@ public:
 	void setMap(int i, int j, int n);
 	int getMap(int i, int j) const;
 	void mapMazeToGraph(graph &g);
+	int getRows(){ return rows; }
+	int getCols(){ return cols; }
 
 private:
 	int rows; // number of rows in the maze
@@ -130,12 +132,13 @@ int main()
 	{
 
 		graph g;
-		int i = 0;
 		while (fin && fin.peek() != 'Z')
 		{
 			maze m(fin);
-			m.print(0,i,0,0);
-			i++;
+			int i = m.getRows() - 1;
+			int j = m.getCols() - 1;
+			m.print(i,j,0,0);
+
 		}
 
 	}
