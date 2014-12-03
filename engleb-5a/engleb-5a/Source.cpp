@@ -154,19 +154,20 @@ void maze::findPathRecursive(){
 void maze::findPathRecursive(int curri, int currj, int goali, int goalj, graph g, string directions){
 	print(goali,goalj,curri,currj);
 	cout << "\n\n";
-	int current = getMap(curri,currj);
+	int current = getMap(curri,currj)-1;
 	g.visit(current);
+	g.printNodes();
 
-	if (current == getMap(goali, goalj)){
+	if (current == getMap(goali, goalj)-1){
 		cout << "Solved " << directions;
 		return;
 	}
 
-	for (int next = 1; next < g.numNodes(); next++)
+	for (int next = 1; next <= g.numNodes(); next++)
 	{
-		if (g.getNode(next).isVisited())
+		if (g.getNode((next)-1).isVisited())
 			continue;
-		if (g.isEdge(current-1, next-1) || g.isEdge(next-1, current-1))
+		if (g.isEdge(current, next-1) || g.isEdge(next-1, current))
 		{
 			int nexti;
 			int nextj;
@@ -190,8 +191,8 @@ void maze::findPathRecursive(int curri, int currj, int goali, int goalj, graph g
 			}
 			if (currj != 0){
 				if (getMap(curri - 1, currj) == next){				//UP
-					nexti = curri;
-					nextj = currj - 1;
+					nexti = curri -1;
+					nextj = currj;
 				}
 			}
 			findPathRecursive(nexti, nextj, goali, goalj, g, directions);
