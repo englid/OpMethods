@@ -10,6 +10,13 @@
 
 using namespace std;
 
+struct solution
+{
+	string directions;
+	int moves;
+} ;
+vector<solution> paths;
+
 class maze
 {
 public:
@@ -32,7 +39,7 @@ private:
 	matrix<bool> value;
 	matrix<int> map;      // Mapping from maze (i,j) values to node index values
 
-	void findPathRecursive(int curri, int currj, int goali, int goalj, graph g, string directions);
+	void findPathRecursive(int curri, int currj, int goali, int goalj, graph g, int moves, string directions);
 };
 
 void maze::setMap(int i, int j, int n)
@@ -148,18 +155,27 @@ void maze::mapMazeToGraph(graph &g)
 void maze::findPathRecursive(){
 	graph g;
 	mapMazeToGraph(g);
-	findPathRecursive(0, 0, getRows() - 1, getCols() - 1, g, "First,");
+	findPathRecursive(0, 0, getRows() - 1, getCols() - 1, g, 0, "");
+	for (int i = 0; i<paths.size(); i++){
+		cout << paths[i].directions << endl;
+		cout << paths[i].moves << endl;
+		cout << "\n";
+	}
 }
 
-void maze::findPathRecursive(int curri, int currj, int goali, int goalj, graph g, string directions){
+void maze::findPathRecursive(int curri, int currj, int goali, int goalj, graph g, int moves,string directions){
 	print(goali, goalj, curri, currj);
 	cout << "\n\n";
 	int current = getMap(curri, currj) - 1;
 	g.visit(current);
-	g.printNodes();
+	//g.printNodes();
 
 	if (current == getMap(goali, goalj) - 1){
-		cout << "Solved " << directions;
+		directions = directions + " solved.";
+		solution path;
+		path.directions = directions;
+		path.moves = moves;
+		paths.push_back(path);
 		return;
 	}
 
@@ -175,27 +191,31 @@ void maze::findPathRecursive(int curri, int currj, int goali, int goalj, graph g
 				if (getMap(curri, currj + 1) == next){				//Right
 					nexti = curri;
 					nextj = currj + 1;
+					directions = directions + "go right, ";
 				}
 			}
 			if (curri != goali){
 				if (getMap(curri + 1, currj) == next){			//Down
 					nexti = curri + 1;
 					nextj = currj;
+					directions = directions + "go down, ";
 				}
 			}
 			if (currj != 0){
 				if (getMap(curri, currj - 1) == next){				//Left
 					nexti = curri;
 					nextj = currj - 1;
+					directions = directions + "go left, ";
 				}
 			}
 			if (currj != 0){
 				if (getMap(curri - 1, currj) == next){				//UP
 					nexti = curri - 1;
 					nextj = currj;
+					directions = directions + "go up, ";
 				}
 			}
-			findPathRecursive(nexti, nextj, goali, goalj, g, directions);
+			findPathRecursive(nexti, nextj, goali, goalj, g, moves+1,directions);
 		}
 	}
 }
@@ -242,4 +262,5 @@ int main()
 	{
 		cout << ex.what() << endl; exit(1);
 	}
+	getchar();
 }
