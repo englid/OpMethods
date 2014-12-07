@@ -17,6 +17,20 @@ struct solution
 } ;
 vector<solution> paths;
 
+struct treeNode{
+	solution* current;
+	treeNode* left;
+	treeNode* right;
+};
+
+class tree{
+public:
+	treeNode head;
+
+	treeNode vectorToTree();
+};
+
+
 class maze
 {
 public:
@@ -31,6 +45,9 @@ public:
 	int getCols(){ return cols; }
 
 	void findPathRecursive();
+	void findShortestPath1();
+	void findShortestPath2();
+	void findShortestPath3();
 
 private:
 	int rows; // number of rows in the maze
@@ -40,6 +57,10 @@ private:
 	matrix<int> map;      // Mapping from maze (i,j) values to node index values
 
 	void findPathRecursive(int curri, int currj, int goali, int goalj, graph g, int moves, string directions);
+
+	int findShortestPath1(treeNode head);
+	int findShortestPath2(treeNode head);
+	int findShortestPath3(treeNode head);
 };
 
 void maze::setMap(int i, int j, int n)
@@ -159,7 +180,7 @@ void maze::findPathRecursive(){
 	for (int i = 0; i<paths.size(); i++){
 		cout << paths[i].directions << endl;
 		cout << paths[i].moves << endl;
-		cout << "\n";
+		cout << "\n\n";
 	}
 }
 
@@ -220,7 +241,79 @@ void maze::findPathRecursive(int curri, int currj, int goali, int goalj, graph g
 	}
 }
 
+void maze::findShortestPath1(){
+	tree treePath;
+	treeNode current = treePath.vectorToTree();
 
+	int shortest = findShortestPath1(current);
+
+	cout << "The shortest path has " << shortest << " moves" << endl;
+}
+void maze::findShortestPath2(){
+	tree treePath;
+	treeNode current = treePath.vectorToTree();
+
+	int shortest = findShortestPath2(current);
+
+	cout << "The shortest path has " << shortest << " moves" << endl;
+}
+void maze::findShortestPath3(){
+	tree treePath;
+	treeNode current = treePath.vectorToTree();
+
+	int shortest = findShortestPath2(current);
+
+	cout << "The shortest path has " << shortest << " moves" << endl;
+}
+int maze::findShortestPath1(treeNode head){
+	int shortest = (head.current)->moves;
+	//dfs code here
+	return shortest;
+	
+}
+int maze::findShortestPath2(treeNode head){
+	int shortest = head.current->moves;
+	//bfs code here
+	return shortest;
+}
+int maze::findShortestPath3(treeNode head){
+	int shortest = head.current->moves;
+	//Dijkstra code here
+	return shortest;
+}
+
+treeNode tree::vectorToTree(){
+	int size = paths.size();
+	int counter = 0;
+
+	treeNode *curr = new treeNode;
+	curr->current = &(paths[counter]);
+	counter++;
+	treeNode *index = curr;
+
+	while (true){
+
+		if (counter < size){
+			treeNode *left = new treeNode;
+			index->left = left;
+			left->current = &(paths[counter]);
+			//cout << paths[counter].moves << endl;
+			counter++;				
+		}		
+		if (counter < size){
+			treeNode *right = new treeNode;
+			index->right = right;
+			right->current = &(paths[counter]);
+			//cout << paths[counter].moves << endl;
+			counter++;
+		}
+		else{
+			break;
+		}
+			index = index->left;	
+	}
+	return *curr;
+}
 
 int main()
 {
@@ -248,6 +341,7 @@ int main()
 			int j = m.getCols() - 1;
 			m.print(i, j, 0, 0);
 			m.findPathRecursive();
+			m.findShortestPath1();
 
 		}
 
