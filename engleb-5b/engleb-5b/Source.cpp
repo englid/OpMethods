@@ -7,6 +7,7 @@
 #include <fstream>
 #include "d_matrix.h"
 #include "graph.h"
+#include <queue>
 
 using namespace std;
 
@@ -19,8 +20,8 @@ vector<solution> paths;
 
 struct treeNode{
 	solution* current;
-	treeNode* left;
-	treeNode* right;
+	treeNode* left = NULL;
+	treeNode* right = NULL;
 };
 
 class tree{
@@ -44,6 +45,7 @@ public:
 	int getRows(){ return rows; }
 	int getCols(){ return cols; }
 
+	void queueVertices(treeNode, queue<treeNode>);
 	void findPathRecursive();
 	void findShortestPath1();
 	void findShortestPath2();
@@ -261,7 +263,7 @@ void maze::findShortestPath3(){
 	tree treePath;
 	treeNode current = treePath.vectorToTree();
 
-	int shortest = findShortestPath2(current);
+	int shortest = findShortestPath3(current);
 
 	cout << "The shortest path has " << shortest << " moves" << endl;
 }
@@ -274,12 +276,33 @@ int maze::findShortestPath1(treeNode head){
 int maze::findShortestPath2(treeNode head){
 	int shortest = head.current->moves;
 	//bfs code here
+
+
 	return shortest;
 }
 int maze::findShortestPath3(treeNode head){
-	int shortest = head.current->moves;
-	//Dijkstra code here
+	int shortest = 9999999;
+	treeNode temp;
+	queue<treeNode> vertices;
+	queueVertices(head, vertices);
+
+	while (!vertices.empty()){
+		temp = vertices.front();
+		if (temp.current->moves < shortest){ shortest = temp.current->moves; }
+		vertices.pop();
+	}
+
 	return shortest;
+}
+
+void maze::queueVertices(treeNode node, queue<treeNode> vertices){
+	vertices.push(node);
+	if (node.left != NULL){
+		queueVertices(*node.left, vertices);
+	}
+	if (node.right != NULL){
+		queueVertices(*node.right, vertices);
+	}
 }
 
 treeNode tree::vectorToTree(){
@@ -341,7 +364,7 @@ int main()
 			int j = m.getCols() - 1;
 			m.print(i, j, 0, 0);
 			m.findPathRecursive();
-			m.findShortestPath1();
+			m.findShortestPath3();
 
 		}
 
