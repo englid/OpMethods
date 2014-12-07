@@ -10,7 +10,7 @@
 
 using namespace std;
 
-struct solution
+struct solution		//solution struct
 {
 	string directions;
 	int moves;
