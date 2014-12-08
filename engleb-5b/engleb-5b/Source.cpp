@@ -61,6 +61,7 @@ private:
 	void findPathRecursive(int curri, int currj, int goali, int goalj, graph g, int moves, string directions);
 
 	int findShortestPath1(treeNode head);
+	int findShortestPath1(treeNode *head);
 	int findShortestPath2(treeNode head);
 	int findShortestPath3(treeNode head);
 };
@@ -268,20 +269,38 @@ void maze::findShortestPath3(){
 	cout << "The shortest path has " << shortest << " moves" << endl;
 }
 int maze::findShortestPath1(treeNode head){
-	int shortest = (head.current)->moves;
 	//dfs code here
-	return shortest;
-	
+	int shortest = (head.current)->moves;
+	int current = findShortestPath1(head.left);
+	if (current < shortest){ return current; }
+	current = findShortestPath1(head.right);
+	return 	current;
+}
+int maze::findShortestPath1(treeNode *head){ // overloaded function for pointer type parameter
+	int shortest = head->current->moves;
+	int current = findShortestPath1(head->left);
+	if (current < shortest){ return current; }
+	current = findShortestPath1(head->right);
+	return current;
 }
 int maze::findShortestPath2(treeNode head){
-	int shortest = head.current->moves;
 	//bfs code here
-
+	int shortest = head.current->moves;
+	queue<treeNode> queue;
+	queue.push(head);
+	while (!queue.empty()){
+		treeNode current = queue.front();
+		queue.push(*current.left);
+		queue.push(*current.right);
+		queue.pop();
+		if (current.current->moves < shortest){ shortest = current.current->moves; }
+	}
 
 	return shortest;
 }
 int maze::findShortestPath3(treeNode head){
-	int shortest = 9999999;
+	// Dijkstra's Algorithm code here
+	int shortest = 9999999; //arbitrary large size
 	treeNode temp;
 	queue<treeNode> vertices;
 	queueVertices(head, vertices);
