@@ -270,18 +270,28 @@ void maze::findShortestPath3(){
 }
 int maze::findShortestPath1(treeNode head){
 	//dfs code here
-	int shortest = (head.current)->moves;
-	int current = findShortestPath1(head.left);
-	if (current < shortest){ return current; }
-	current = findShortestPath1(head.right);
-	return 	current;
+	int shortest = head.current->moves;
+	if (head.left != NULL){
+		int current = findShortestPath1(head.left);
+		if (current < shortest){ shortest = current; }
+	}
+	if (head.right != NULL){
+		int current = findShortestPath1(head.right);
+		if (current < shortest){ shortest = current; }
+	}
+	return shortest;
 }
 int maze::findShortestPath1(treeNode *head){ // overloaded function for pointer type parameter
 	int shortest = head->current->moves;
-	int current = findShortestPath1(head->left);
-	if (current < shortest){ return current; }
-	current = findShortestPath1(head->right);
-	return current;
+	if (head->left != NULL){
+		int current = findShortestPath1(head->left);
+		if (current < shortest){ shortest = current; }
+	}
+	if (head->right != NULL){
+		int current = findShortestPath1(head->right);
+		if (current < shortest){ shortest = current; }
+	}
+	return shortest;
 }
 int maze::findShortestPath2(treeNode head){
 	//bfs code here
@@ -383,7 +393,7 @@ int main()
 			int j = m.getCols() - 1;
 			m.print(i, j, 0, 0);
 			m.findPathRecursive();
-			m.findShortestPath3();
+			m.findShortestPath1();
 
 		}
 
