@@ -300,8 +300,10 @@ int maze::findShortestPath2(treeNode head){
 	queue.push(head);
 	while (!queue.empty()){
 		treeNode current = queue.front();
-		queue.push(*current.left);
-		queue.push(*current.right);
+		if (current.left != NULL)
+			queue.push(*current.left);
+		if (current.right != NULL)
+			queue.push(*current.right);
 		queue.pop();
 		if (current.current->moves < shortest){ shortest = current.current->moves; }
 	}
@@ -393,7 +395,7 @@ int main()
 			int j = m.getCols() - 1;
 			m.print(i, j, 0, 0);
 			m.findPathRecursive();
-			m.findShortestPath1();
+			m.findShortestPath2();
 
 		}
 
