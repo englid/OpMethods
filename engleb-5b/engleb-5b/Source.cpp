@@ -45,7 +45,7 @@ public:
 	int getRows(){ return rows; }
 	int getCols(){ return cols; }
 
-	void queueVertices(treeNode, queue<treeNode>);
+	void queueVertices(treeNode node, queue<treeNode> &vertices);
 	void findPathRecursive();
 	void findShortestPath1();
 	void findShortestPath2();
@@ -326,7 +326,7 @@ int maze::findShortestPath3(treeNode head){
 	return shortest;
 }
 
-void maze::queueVertices(treeNode node, queue<treeNode> vertices){
+void maze::queueVertices(treeNode node, queue<treeNode> &vertices){
 	vertices.push(node);
 	if (node.left != NULL){
 		queueVertices(*node.left, vertices);
@@ -395,7 +395,7 @@ int main()
 			int j = m.getCols() - 1;
 			m.print(i, j, 0, 0);
 			m.findPathRecursive();
-			m.findShortestPath2();
+			m.findShortestPath3();
 
 		}
 
